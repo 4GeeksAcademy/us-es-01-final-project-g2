@@ -1,15 +1,21 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import injectContext from "./store/appContext.js";
+
+
 // Custom components
 import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
-import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
+import { NavbarPublic } from "./component/NavbarPublic.jsx";
+
+
+
 // Custon pages / views
 import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
+import { Signup } from "./pages/Signup.jsx";
 
 
 // Create your first component
@@ -23,12 +29,13 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <Navbar />
+                    <NavbarPublic/>
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} path="*" />
+                        <Route element={<Signup/>} path="/Signup" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

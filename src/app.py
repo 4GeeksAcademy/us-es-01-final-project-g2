@@ -8,6 +8,7 @@ from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
+from flask_jwt_extended import JWTManager
 from api.admin import setup_admin
 from api.commands import setup_commands
 
@@ -29,6 +30,10 @@ db.init_app(app)
 setup_admin(app)  # Add the admin
 setup_commands(app)  # Add the admin
 app.register_blueprint(api, url_prefix='/api')  # Add all endpoints form the API with a "api" prefix
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY") # Change this!
+jwt = JWTManager(app)
+
 
 
 # Handle/serialize errors like a JSON object
