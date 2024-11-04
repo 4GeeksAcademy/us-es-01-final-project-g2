@@ -23,36 +23,43 @@ def handle_hello():
 
 @api.route("/login", methods=["POST"])
 def login():
-    response_body ={}
+    response_body = {}
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    user = db.session.execute(db.select(Users).where(Users.email==email, Users.password==password,Users.is_active)).scalar()
-    if not user :
-        return jsonify({"msg": "Bad username or password"}), 401
-    access_token = create_access_token(identity=email)
+    user = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active)).scalar()
+    if not user:
+        response_body['message'] = "Bad email or password"
+        return response_body, 401
+    access_token = create_access_token(identity={'email': user.email, 'id': user.id})
+    response_body['message'] = f'Usuario {email} logeado con éxito'
+    response_body['access_token'] = access_token
+    response_body['user'] = user.serialize()
+    return response_body, 200
+
+
+@api.route("/signup", methods=["POST"])
+def signup():
+    response_body = {}
+    body = request.json
+    user = Users(email=body['email'],
+                 password=body['password'],
+                 created_at=datetime.now(),
+                 updated_at=datetime.now())
+    db.session.add(user)
+    db.session.commit()
+    access_token = create_access_token(identity={'email': user.email, 'id': user.id})
     response_body["access_token"]=access_token
     response_body["user"]=user.serialize()
     return response_body, 200
 
 
+
 # User endpoints
-@api.route('/users', methods=['POST', 'GET'])
+@api.route('/users', methods=['GET'])
 def handle_users():
     if request.method == 'GET':
         users = Users.query.all()
         return jsonify([user.serialize() for user in users]), 200
-    elif request.method == 'POST':
-        body = request.json
-        new_user = Users(email=body['email'],
-                         password=body['password'],
-                         bio=body.get('bio', ''),
-                         profile_picture=body.get('profile_picture', ''),
-                         birthdate=body.get('birthdate'),
-                         created_at=datetime.now(),
-                         updated_at=datetime.now())
-        db.session.add(new_user)
-        db.session.commit()
-        return jsonify(new_user.serialize()), 201
 
 
 @api.route('/users/<int:user_id>', methods=['GET', 'PUT', 'DELETE'])

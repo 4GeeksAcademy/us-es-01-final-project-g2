@@ -1,25 +1,41 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Signup = () => {
+    const { actions } = useContext(Context);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        await actions.signup(email, password);
+    };
+
     return (
         <div className="container d-flex flex-column align-items-center mt-5">
             <h2 className="mb-3">Sign up</h2>
             <p className="text-danger">
-                or <a className="text-primary" href="/">sign in to your account</a>
+                or <Link to="/" className="text-primary">sign in to your account</Link>
             </p>
-            <form className="w-50">
+            <form className="w-50" onSubmit={handleSignup}>
                 <div className="mb-3">
-                    <input type="text" className="form-control" placeholder="First name" />
+                    <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                 </div>
                 <div className="mb-3">
-                    <input type="text" className="form-control" placeholder="Surname" />
-                </div>
-                <div className="mb-3">
-                    <input type="email" className="form-control" placeholder="Email" />
-                </div>
-                <div className="mb-3">
-                    <input type="password" className="form-control" placeholder="Password" />
+                    <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
                 <button type="submit" className="btn btn-primary w-100 mb-3">
                     Sign up

@@ -12,10 +12,14 @@ import { NavbarPublic } from "./component/NavbarPublic.jsx";
 
 
 // Custon pages / views
-import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
 import { Signup } from "./pages/Signup.jsx";
+import { FormLogin } from "./pages/FormLogin.jsx";
+import { Dashboard } from "./pages/Dashboard.jsx";
+import { AuthProvider } from "./store/context/AuthProvider.jsx";
+
+
 
 
 // Create your first component
@@ -23,22 +27,25 @@ const Layout = () => {
     // The basename is used when your project is published in a subdirectory and not in the root of the domain
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
         <div>
             <BrowserRouter basename={basename}>
-                <ScrollToTop>
-                    <NavbarPublic/>
-                    <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1>Not found!</h1>} path="*" />
-                        <Route element={<Signup/>} path="/Signup" />
-                    </Routes>
-                    <Footer />
-                </ScrollToTop>
+                {/* <AuthProvider> */}
+                    <ScrollToTop>
+                        <NavbarPublic />
+                        <Routes>
+                            <Route element={<FormLogin />} path="/" />
+                            <Route element={<Dashboard />} path="/dashboard" />
+                            <Route element={<Demo />} path="/demo" />
+                            <Route element={<Single />} path="/single/:theid" />
+                            <Route element={<h1>Not found!</h1>} path="*" />
+                            <Route element={<Signup />} path="/Signup" />
+                        </Routes>
+                        <Footer />
+                    </ScrollToTop>
+                {/* </AuthProvider> */}
             </BrowserRouter>
         </div>
     );
