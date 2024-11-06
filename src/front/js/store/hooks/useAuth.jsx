@@ -1,4 +1,4 @@
-/* import React from "react";
+ import React from "react";
 import React, { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
    const useAuth = () => {
@@ -7,4 +7,4 @@ import AuthContext from "../context/AuthProvider";
  }
 
 
- export default useAuth; */
+ export default useAuth; 

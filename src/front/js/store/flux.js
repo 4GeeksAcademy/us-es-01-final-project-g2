@@ -91,6 +91,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('token', data.access_token);
 				setStore({ user: data.user.email, isLogin: true, isAdmin: data.user.is_admin });
 				return data;
+			},
+			logout: () => {
+				setStore({user: null, isLogin: false})
 			}
 		}
 	};

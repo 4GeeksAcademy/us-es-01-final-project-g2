@@ -21,7 +21,7 @@ export const FormLogin = () => {
 
   return (
     <div
-      className="container d-flex justify-content-center align-items-center min-vh-100"
+      className="container d-flex justify-content-center align-items-center min-vh-100 "
       style={{
         backgroundImage: 'url("https://cdn.pixabay.com/photo/2022/09/28/11/31/halloween-7484855_1280.jpg")',
         backgroundSize: 'cover',

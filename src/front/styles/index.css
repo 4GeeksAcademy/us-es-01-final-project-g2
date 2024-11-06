@@ -4,3 +4,9 @@
 body {
     background-color: #13192e; /* Color de fondo */
 }
+
+
+/* Archivo CSS */
+.nav-link {
+	color: white !important;
+}
