@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { FaUserPlus } from "react-icons/fa"; // Import the Font Awesome user-plus icon
+ 
 
 export const NavbarPublic = () => {
 	return (
@@ -14,13 +15,23 @@ export const NavbarPublic = () => {
 					<div className="collapse navbar-collapse" id="navbarNav">
 						<ul className="navbar-nav me-auto">
 							<li className="nav-item">
-							<Link to="/" className="nav-link">
-								Home
-							</Link>
+								<Link to="/" className="navbar-brand">
+									<img
+										src="https://i.ibb.co/NCzy07r/speak-processed.png"
+										alt="Inicio"
+										style={{ width: "128px", marginRight: "55px" }}
+									/>
+								</Link>
 							</li>
 						</ul>
 						<div className="ms-auto">
-							<Link to="/signup" className="btn btn-primary">Sign Up</Link>
+							<ul className="navbar-nav">
+								<li className="nav-item">
+									<Link to="/signup" className="nav-link">
+										<FaUserPlus className="me-2" /> Register
+									</Link>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>

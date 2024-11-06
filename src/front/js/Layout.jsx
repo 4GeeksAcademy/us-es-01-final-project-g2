@@ -1,25 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import injectContext from "./store/appContext.js";
-
-
+import injectContext, { Context } from "./store/appContext.js";
 // Custom components
 import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
 import { Footer } from "./component/Footer.jsx";
 import { NavbarPublic } from "./component/NavbarPublic.jsx";
-
-
-
+import { NavbarPrivado } from "./component/NavbarPrivado.jsx";
 // Custon pages / views
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
 import { Signup } from "./pages/Signup.jsx";
 import { FormLogin } from "./pages/FormLogin.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
+/* import { AuthProvider } from "./store/context/AuthProvider.jsx"; */
+import { Logout } from "./component/Logout.jsx";
 import { AuthProvider } from "./store/context/AuthProvider.jsx";
-
-
 
 
 // Create your first component
@@ -28,13 +24,14 @@ const Layout = () => {
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
+    const { store }= useContext(Context)
 
     return (
         <div>
             <BrowserRouter basename={basename}>
-                {/* <AuthProvider> */}
+
                     <ScrollToTop>
-                        <NavbarPublic />
+                        {store.isLogin ? <NavbarPrivado/> :  <NavbarPublic /> }
                         <Routes>
                             <Route element={<FormLogin />} path="/" />
                             <Route element={<Dashboard />} path="/dashboard" />
@@ -42,10 +39,10 @@ const Layout = () => {
                             <Route element={<Single />} path="/single/:theid" />
                             <Route element={<h1>Not found!</h1>} path="*" />
                             <Route element={<Signup />} path="/Signup" />
+                            <Route element={<Logout />} path="/logout" />
                         </Routes>
                         <Footer />
                     </ScrollToTop>
-                {/* </AuthProvider> */}
             </BrowserRouter>
         </div>
     );

@@ -1,52 +1,53 @@
-// import React from "react";
-// import React, { useState, useEffect, createContext } from "react";
+import React from "react";
+import React, { useState, useEffect, createContext } from "react";
 
-// const AuthContext = createContext();
+const AuthContext = createContext();
 
-// export const AuthProvider = ({ children }) => {
-//   const [auth, setAuth] = useState({});
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState({});
 
-//   useEffect(() => {
-//     authUser();
-//   }, []);
+  useEffect(() => {
+    authUser();
+  }, []);
 
-//   const authUser = async () => {
-//     const token = localStorage.getItem("token");
-//     const user = localStorage.getItem("user");
+  const authUser = async () => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
 
-//     if (!token || !user) {
-//       return false;
+    if (!token || !user) {
+      return false;
 
-//     }
-//     const userObj = JSON.parse(user);
-//     const userId = userObj.id;
+    }
+    const userObj = JSON.parse(user);
+    const userId = userObj.id;
 
-//     const request = await fetch(Global.url + "user/profile" + userId, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": token
-//       }
-//     });
-//     const data = await request.json();
+    const request = await fetch(Global.url + "user/profile" + userId, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token
+      }
+    });
+    const data = await request.json();
 
-//     setAuth(data.user);
-
-//   }
-
+    setAuth(data.user);
+  }
 
 
-//   return (
-//     <Auth.Provider
-//       value={{
-//        auth,
-//        setAuth
-//       }}
-//     >
-//       {children}
-//     </Auth.Provider>
-//   );
-// };
+
+  return (
+    <Auth.Provider
+      value={{
+        auth,
+        setAuth
+        
+      }}
+    >
+      {children}
+    </Auth.Provider>
+  );
+};
 
 
-// export default AuthContext
+export default AuthContext
+
