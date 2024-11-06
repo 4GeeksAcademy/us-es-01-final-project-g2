@@ -1,21 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa"; // Import the Font Awesome user-plus icon
+ 
 
 export const NavbarPublic = () => {
 	return (
 		<div>
-			<nav className="navbar navbar-expand-lg ">
+			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 				<div className="container-fluid">
-					<button
-						className="navbar-toggler"
-						type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#navbarNav"
-						aria-controls="navbarNav"
-						aria-expanded="false"
-						aria-label="Toggle navigation"
-					>
+				<i className="fa-solid fa-user-group"></i>
+					<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
 					</button>
 					<div className="collapse navbar-collapse" id="navbarNav">

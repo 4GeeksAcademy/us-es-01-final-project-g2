@@ -1,17 +1,12 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import injectContext, { Context } from "./store/appContext.js";
-
-
 // Custom components
 import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
 import { Footer } from "./component/Footer.jsx";
 import { NavbarPublic } from "./component/NavbarPublic.jsx";
 import { NavbarPrivado } from "./component/NavbarPrivado.jsx";
-
-
-
 // Custon pages / views
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
@@ -20,9 +15,7 @@ import { FormLogin } from "./pages/FormLogin.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 /* import { AuthProvider } from "./store/context/AuthProvider.jsx"; */
 import { Logout } from "./component/Logout.jsx";
-
-
-
+import { AuthProvider } from "./store/context/AuthProvider.jsx";
 
 
 // Create your first component
@@ -36,6 +29,7 @@ const Layout = () => {
     return (
         <div>
             <BrowserRouter basename={basename}>
+
                     <ScrollToTop>
                         {store.isLogin ? <NavbarPrivado/> :  <NavbarPublic /> }
                         <Routes>
