@@ -1,7 +1,37 @@
-/*
-    home.css: This website contains selectors only used in home.css
+/* Inicio.css */
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+body, .fondo {
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.card-login {
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro con transparencia */
+    border-radius: 15px;
+    max-width: 400px;
+    width: 100%;
+}
+
+input::placeholder {
+    color: #bbb;
+    opacity: 1;
+}
+
+a {
+    text-decoration: none;
+    color: #ccc;
+}
+
+a:hover {
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #333;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #555;
+}
