@@ -44,7 +44,8 @@ class Posts(db.Model):
                 'title': self.title,
                 'content': self.content,
                 'created_at': self.created_at,
-                'author_id': self.author_id}
+                'author_id': self.author_id,
+                'author_name': self.author_to.email}
 
  
 class Comments(db.Model):
