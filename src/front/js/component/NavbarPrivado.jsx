@@ -13,7 +13,6 @@ export const NavbarPrivado = () => {
 				<Navbar.Collapse id="navbarNav">
 					<Nav className="ms-auto">
 						<Nav.Link as={Link} to="/profile" className="text-white">Perfil</Nav.Link>
-						<Nav.Link as={Link} to="/settings" className="text-white">Configuración</Nav.Link>
 						<Nav.Link as={Link} to="/logout" className="text-white">
 							<i className="fa-solid fa-arrow-right-from-bracket" style={{ fontSize: '1.2rem', color: 'white', marginRight: '5px' }}></i>
 							Logout

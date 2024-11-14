@@ -93,7 +93,85 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data;
 			},
 			logout: () => {
-				setStore({user: null, isLogin: false})
+				setStore({ user: null, isLogin: false })
+			},
+			addPost: async (title, content, author_id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/posts', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ title, content, author_id })
+					});
+					if (response.ok) {
+						const newPost = await response.json();
+						return newPost;
+					} else {
+						console.error("Error creating post", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error creating post", error);
+				}
+			},
+			getPosts: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/posts');
+					if (response.ok) {
+						const posts = await response.json();
+						return posts;
+					} else {
+						console.error("Error fetching posts", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error fetching posts", error);
+				}
+			},
+			addComment: async (postId, content) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/comments`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ post_id: postId, content })
+					});
+					if (response.ok) {
+						const comment = await response.json();
+						const store = getStore();
+						// Añadir el comentario al estado global
+						setStore({
+							comments: {
+								...store.comments,
+								[postId]: [...(store.comments[postId] || []), comment]
+							}
+						});
+					} else {
+						console.error("Error adding comment", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error adding comment", error);
+				}
+			},
+			// Acción para obtener todos los comentarios de un post
+			getComments: async (postId) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/comments?post_id=${postId}`);
+					if (response.ok) {
+						const comments = await response.json();
+						const store = getStore();
+						setStore({
+							comments: {
+								...store.comments,
+								[postId]: comments
+							}
+						});
+					} else {
+						console.error("Error fetching comments", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error fetching comments", error);
+				}
 			}
 		}
 	};

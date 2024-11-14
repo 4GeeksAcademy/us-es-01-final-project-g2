@@ -1,46 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Container, Row, Col, Nav, Card, Button, Form, InputGroup } from 'react-bootstrap';
-import { FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUsers, FaEllipsisH } from 'react-icons/fa';
+import { Container, Row, Col, Nav, Card, Button, Form, InputGroup } from 'react-bootstrap';
+import { FaHome, FaHeart, FaComment, FaShare, FaEye, FaStar } from 'react-icons/fa';
+import { Context } from '../store/appContext.js';
 
- export const Dashboard = () => {
-  const [posts, setPosts] = useState([
-    { username: 'Hodgetwins', text: "Y'all post videos of the meltdown the View is having right now", reactions: { likes: '1.6K', comments: '4.3K', shares: '107K', views: '9.6M' } },
-    { username: 'Heretic', text: '"AN ABSOLUTE MUST-SEE. #HereticMovie is one of the best horror movies of the year."', reactions: { likes: '94%', comments: '12', shares: '193', views: '687K' }, isAd: true },
-    { username: 'nina', text: "It just doesn’t make sense. So many republicans voted democrat...", reactions: { likes: '26K', comments: '38K', shares: '435K', views: '13M' } },
-  ]);
+export const Dashboard = () => {
+  const { store, actions } = useContext(Context);
+  const [posts, setPosts] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [newPost, setNewPost] = useState('');
+  const [comments, setComments] = useState({}); // { postId: [comments] }
 
-  const handlePost = () => {
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = async () => {
+    const fetchedPosts = await actions.getPosts();
+    if (fetchedPosts) {
+      setPosts(fetchedPosts);
+    }
+  };
+
+  const handlePost = async () => {
     if (newPost.trim()) {
-      const newEntry = {
-        username: 'Kleiner Garcia',
-        text: newPost,
-        reactions: { likes: '0', comments: '0', shares: '0', views: '0' },
-      };
-      setPosts([newEntry, ...posts]);
-      setNewPost('');
+      const author_id = 1;  // Cambia según el usuario autenticado
+      const newPostEntry = await actions.addPost("New Post Title", newPost, author_id);
+      if (newPostEntry) {
+        setPosts([newPostEntry, ...posts]);
+        setNewPost('');
+      }
+    }
+  };
+
+  const handleFavorite = (post) => {
+    if (!favorites.some(fav => fav.id === post.id)) {
+      setFavorites([...favorites, post]);
+    }
+  };
+
+  const handleComment = (postId, comment) => {
+    if (comment.trim()) {
+      // enviar el comentario al back para que se grabe mediante un accion de flux
+      // hcaer un accion que haga un Get de los Comentarios de este Post y El Resultado Grabarlos  con setComments
+      // setComments({
+      //   ...comments,
+      //   [postId]: [...(comments[postId] || []), comment]
+      // });
     }
   };
 
   return (
-    <Container fluid >
-
+    <Container fluid>
       <Row>
         {/* Barra lateral izquierda */}
         <Col md={2} className="bg-dark text-white vh-100">
           <Nav className="flex-column p-3">
             <Nav.Link className="text-white" href="#home"><FaHome /> Home</Nav.Link>
-          
-            <Nav.Link className="text-white" href="#notifications"><FaBell /> Notifications</Nav.Link>
-            <Nav.Link className="text-white" href="#messages"><FaEnvelope /> Messages</Nav.Link>
-    
             <Button variant="primary" className="mt-4">Post</Button>
           </Nav>
         </Col>
 
         {/* Columna principal (feed de publicaciones) */}
-        <Col md={6} className=" text-light">
+        <Col md={6} className="text-light">
           <Card className="mb-3 p-3">
             <InputGroup>
               <Form.Control
@@ -53,27 +75,59 @@ import { FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUsers, FaEllipsisH 
             </InputGroup>
           </Card>
 
-          {posts.map((post, index) => (
-            <Card className="mb-3" key={index}>
+          {posts.map((post) => (
+            <Card className="mb-3" key={post.id}>
               <Card.Body>
                 <div className="d-flex justify-content-between align-items-center">
-                  <div className="fw-bold">{post.username}</div>
-                  <small className="text-muted">{post.isAd ? 'Ad' : '5h'}</small>
+                  <div className="fw-bold">{post.author_name}</div>
+                  <small className="text-muted">{new Date(post.created_at).toLocaleString()}</small>
                 </div>
-                <Card.Text>{post.text}</Card.Text>
+                <Card.Text>{post.content}</Card.Text>
                 <div className="d-flex justify-content-between text-muted">
-                  <div>❤️ {post.reactions.likes}</div>
-                  <div>💬 {post.reactions.comments}</div>
-                  <div>🔁 {post.reactions.shares}</div>
-                  <div>👀 {post.reactions.views}</div>
+                  <div><FaComment /> {comments[post.id]?.length || 0}</div>
+                </div>
+                {/* Sección de Comentarios */}
+                <div className="mt-3">
+                  <Form.Group controlId={`comment-${post.id}`}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Write a comment..."
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleComment(post.id, e.target.value);
+                          e.target.value = '';
+                        }
+                      }}
+                    />
+                  </Form.Group>
+                  {comments[post.id]?.map((comment, index) => (
+                    <Card.Text key={index} className="text-muted small ms-3">- {comment}</Card.Text>
+                  ))}
                 </div>
               </Card.Body>
             </Card>
           ))}
         </Col>
 
-        {/* Barra lateral derecha (tendencias y sugerencias de seguimiento) */}
-        <Col md={4} className="bg-dark ">
+        {/* Barra lateral derecha */}
+        <Col md={4} className="bg-dark">
+          {/* Sección de Favoritos */}
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>Favorites</Card.Title>
+              {favorites.length > 0 ? (
+                <ul className="list-unstyled">
+                  {favorites.map((fav) => (
+                    <li key={fav.id}>{fav.content}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No favorites yet</p>
+              )}
+            </Card.Body>
+          </Card>
+
+          {/* Sección de tendencias */}
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>What's happening</Card.Title>
@@ -87,6 +141,7 @@ import { FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUsers, FaEllipsisH 
             </Card.Body>
           </Card>
 
+        
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Who to follow</Card.Title>
@@ -102,5 +157,3 @@ import { FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUsers, FaEllipsisH 
     </Container>
   );
 };
-
-
