@@ -62,8 +62,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     localStorage.setItem("token", data.access_token);
 
                     // Actualizar el estado global con el usuario registrado y el token
-                    setStore({ user: data.user, isLogin: true });
-                    return data;
+                    setStore({ user: data.user, isLogin: true, isAdmin: data.user.is_admin });
+                 return data;
                 } catch (error) {
                     console.error("Error during signup:", error);
                 }
@@ -90,7 +90,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                     const data = await response.json();
                     localStorage.setItem('token', data.access_token);
-                    setStore({ user: data.user.email, isLogin: true, isAdmin: data.user.is_admin });
+                    setStore({ user: data.user, isLogin: true, isAdmin: data.user.is_admin });
                     return data;
                 } catch (error) {
                     console.error("Error during login:", error);

@@ -10,6 +10,7 @@ export const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [newPost, setNewPost] = useState("");
+  const [newTitlePost, setNewTitlePost] = useState("");
   const [comments, setComments] = useState({}); // { postId: [comments] }
   const [following, setFollowing] = useState([]); // Estado de usuarios seguidos
 
@@ -41,8 +42,8 @@ export const Dashboard = () => {
   // Maneja la creación de un nuevo post
   const handlePost = async () => {
     if (newPost.trim()) {
-      const author_id = 1; // Cambia según el usuario autenticado
-      const newPostEntry = await actions.addPost("New Post Title", newPost, author_id);
+      const author_id = store.user.id; // Cambia según el usuario autenticado
+      const newPostEntry = await actions.addPost(newTitlePost, newPost, author_id);
       if (newPostEntry) {
         setPosts([newPostEntry, ...posts]);
         setNewPost("");
@@ -95,18 +96,24 @@ export const Dashboard = () => {
         {/* Columna principal (feed de publicaciones) */}
         <Col md={9} className="text-light">
           <Card className="mb-3 p-3">
-            <InputGroup>
+         {/*    <InputGroup> */}
+            <Form.Control
+                as="input"
+                placeholder="What is happening?!"
+                value={newTitlePost}
+                onChange={(e) => setNewTitlePost(e.target.value)}
+              />
               <Form.Control
                 as="textarea"
-                placeholder="What is happening?!"
+                placeholder="Your description"
                 value={newPost}
                 onChange={(e) => setNewPost(e.target.value)}
               />
               <Button onClick={handlePost} variant="primary">
                 Post
               </Button>
-            </InputGroup>
-          </Card>
+{/*             </InputGroup>
+ */}          </Card>
 
           {posts.map((post) => (
             <Card className="mb-3" key={post.id}>
