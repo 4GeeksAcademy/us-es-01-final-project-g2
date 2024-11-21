@@ -30,7 +30,7 @@ const Layout = () => {
     const { store }= useContext(Context)
 
     return (
-        <div>
+        <div className="bg-dark text-light d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
 
                     <ScrollToTop>

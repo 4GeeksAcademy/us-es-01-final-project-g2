@@ -48,7 +48,7 @@ export const Perfil1 = () => {
           <div className="col-md-8">
             <div className="bg-secondary p-4 rounded mb-4">
               <h2>Hi there </h2>
-              <p><strong>kleiner Garcia</strong> I am  <strong>Kleiner</strong> </p>
+              <p><strong></strong> I am  <strong>Hector </strong> </p>
               <p>Here are some ideas to get you started:</p>
               <ul className="list-unstyled">
                 <li> I’m currently learning ...</li>
