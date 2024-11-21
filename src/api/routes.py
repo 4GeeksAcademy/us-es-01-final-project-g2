@@ -129,37 +129,57 @@ def handle_post(post_id):
 # Comment endpoints
 @api.route('/comments', methods=['POST', 'GET'])
 def handle_comments():
-    if request.method == 'GET':
-        comments = Comments.query.all()
+    if request.method == "GET":
+        post_id = request.args.get("post_id")
+        if post_id:
+            comments = Comments.query.filter_by(post_id=post_id).all()
+        else:
+            comments = Comments.query.all()
         return jsonify([comment.serialize() for comment in comments]), 200
-    elif request.method == 'POST':
-        body = request.json
+
+    if request.method == "POST":
+        data = request.json
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+        
+        required_fields = ['post_id', 'content', 'author_id']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"{field} is required"}), 400
+
         new_comment = Comments(
-            content=body['content'],
-            created_at=datetime.now(),
-            author_id=body['author_id'],
-            post_id=body['post_id']
+            post_id=data['post_id'],
+            content=data['content'],
+            author_id=data['author_id'],
+            created_at=datetime.now()
         )
         db.session.add(new_comment)
         db.session.commit()
+
         return jsonify(new_comment.serialize()), 201
 
 
 @api.route('/comments/<int:comment_id>', methods=['GET', 'PUT', 'DELETE'])
 def handle_comment(comment_id):
+    # Retrieve the comment by its ID
     comment = Comments.query.get(comment_id)
     if comment is None:
         return jsonify({'message': 'Comment not found'}), 404
 
     if request.method == 'GET':
+        # Return the comment's serialized data
         return jsonify(comment.serialize()), 200
+
     elif request.method == 'PUT':
         body = request.json
+        # Update the content and timestamp if provided
         comment.content = body.get('content', comment.content)
         comment.updated_at = datetime.now()
         db.session.commit()
         return jsonify(comment.serialize()), 200
+
     elif request.method == 'DELETE':
+        # Delete the comment from the database
         db.session.delete(comment)
         db.session.commit()
         return jsonify({'message': 'Comment deleted'}), 204
@@ -202,4 +222,3 @@ def handle_friendship(friendship_id):
         db.session.delete(friendship)
         db.session.commit()
         return jsonify({'message': 'Friendship deleted'}), 204
-

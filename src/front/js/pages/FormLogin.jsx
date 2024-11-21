@@ -12,20 +12,31 @@ export const FormLogin = () => {
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const dataToSend = { email, password };
-    actions.login(dataToSend);
-    navigate('/dashboard');
+
+    // Llama a login y verifica si el inicio de sesión fue exitoso
+    const isAuthenticated = await actions.login(dataToSend);
+
+    if (isAuthenticated) {
+      navigate('/dashboard'); // Solo navega al dashboard si la autenticación es exitosa
+    } else {
+      alert("Email o contraseña incorrectos. Por favor, intenta de nuevo.");
+    }
   };
 
   return (
     <div
-      className="container d-flex justify-content-center align-items-center min-vh-100"
+      className="container-fluid d-flex justify-content-center align-items-center min-vh-100"
       style={{
         backgroundImage: 'url("https://cdn.pixabay.com/photo/2022/09/28/11/31/halloween-7484855_1280.jpg")',
         backgroundSize: 'cover',
+        backgroundColor: '#000', // Fondo oscuro para toda el área
+        width: '100vw',
+        height: '100vh',
         backgroundPosition: 'center center',
+        overflow: 'hidden', 
       }}
     >
       <div className="row d-flex justify-content-center">
