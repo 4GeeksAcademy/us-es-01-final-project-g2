@@ -1,0 +1,85 @@
+.profile-container {
+    width: 60%;
+    margin: auto;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .profile-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #30363d;
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: #58a6ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .image-placeholder {
+    width: 60px;
+    height: 60px;
+    background-color: #b2f5ea;
+  }
+  
+  .username {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .edit-profile-button {
+    background-color: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .edit-profile-button:hover {
+    background-color: #30363d;
+  }
+  
+  .followers-following {
+    color: #8b949e;
+    margin-top: 5px;
+  }
+  
+  .achievements {
+    background-color: #161b22;
+    color: #8b949e;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 5px;
+  }
+  
+  .achievements a {
+    color: #58a6ff;
+  }
+  
+  .readme-section {
+    margin-top: 20px;
+  }
+  
+  .readme-section h2 {
+    font-size: 24px;
+  }
+  
+  .readme-section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .readme-section li {
+    margin: 5px 0;
+  }
